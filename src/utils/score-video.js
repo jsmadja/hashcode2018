@@ -14,7 +14,7 @@ module.exports = {
       _.mapKeys(endpoint.requests, (value, key) => {
 
         const video = _.find(videos, video => video.id === parseInt(key, 10));
-        video.score += x * parseInt(value, 10) / y * video.size * z * parseInt(endpoint.datacenterLatency, 10);
+        video.score += (x * parseInt(value, 10)) / (y * parseInt(video.size, 10) * z * parseInt(endpoint.datacenterLatency, 10));
       });
     });
 
