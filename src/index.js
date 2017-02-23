@@ -1,12 +1,13 @@
 import {fileReader, fileWriter} from './utils/files';
+import {calcSolution} from './main';
 
-let videos, endpoints, caches, requests;
-[videos, endpoints, caches, requests] = fileReader('./data/example.in');
+let [videosInput, endpointsInput, cachesInput, requestsInput ] = fileReader('./data/example.in');
 
-console.log(videos);
-console.log(caches);
-for(const cache of caches){
-	console.log(cache.endpointInfos);
-}
-console.log(endpoints);
-console.log(requests);
+console.log(videosInput);
+console.log(endpointsInput);
+console.log(cachesInput);
+console.log(requestsInput);
+
+const solution = calcSolution(videosInput, endpointsInput, cachesInput, requestsInput);
+
+console.log(solution)
