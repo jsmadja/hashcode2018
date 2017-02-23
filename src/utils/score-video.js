@@ -10,9 +10,13 @@ module.exports = {
     });
 
     _.each(endpoints, endpoint => {
+
       _.each(endpoint.requests, request => {
-        const video = videos[request.videoId];
-        video.score += x * request.numberOfRequests / y * video.size * z * endpoint.latency;
+
+        if (request.videoId) {
+          const video = videos[request.videoId];
+          video.score += x * request.numberOfRequests / y * video.size * z * endpoint.latency;
+        }
       });
     });
 
