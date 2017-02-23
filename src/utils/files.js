@@ -3,6 +3,7 @@ import fs from 'fs';
 import RequestDescription from '../models/request-description';
 import Cache from '../models/cache';
 import Endpoint from '../models/endpoint';
+export Video from '../models/video';
 
 export function fileReader(filePath) {
 
@@ -19,10 +20,8 @@ export function fileReader(filePath) {
     let splittedContent = fileContent.split('\n');
     [numberOfVideos, numberOfEndpoints, numberOfRequestDescriptions, numberOfCaches, cacheSize] = splittedContent[0].split(' ').map((number) => parseInt(number));
     splittedContent[1].split(' ').forEach((videoSize, index) => {
-        videos.push({
-            id: index,
-            size: videoSize
-        });
+        const video = new Video(index, videoSize);
+        videos.push(video);
     });
     splittedContent = splittedContent.slice(2, splittedContent.length);
 
