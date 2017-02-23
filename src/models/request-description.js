@@ -1,12 +1,11 @@
 export default class RequestDescription {
     
-    id;
+    videoId;
     endpointId;
     numberOfRequests;
+    constructor(videoId, endpointId, numberOfRequests) {
 
-    constructor(id, endpointId, numberOfRequests) {
-
-        this.id = id;
+        this.videoId = videoId;
         this.endpointId = endpointId;
         this.numberOfRequests = numberOfRequests;
     }
