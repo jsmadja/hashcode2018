@@ -1,20 +1,23 @@
 import fs from 'fs';
 
+import RequestDescription from '../models/request-description';
+import Cache from '../models/cache';
+import Endpoint from '../models/endpoint';
+
 export function fileReader(filePath) {
 
     const videos = [];
     const endpoints = [];
     const requests = [];
-    const caches = [];
     let numberOfVideos = 0;
     let numberOfEndpoints = 0;
-    let numberOfRequests = 0;
+    let numberOfRequestDescriptions = 0;
     let numberOfCaches = 0;
     let cacheSize = 0;
     
     const fileContent = fs.readFileSync(filePath, {encoding: 'utf-8'});
     let splittedContent = fileContent.split('\n');
-    [numberOfVideos, numberOfEndpoints, numberOfRequests, numberOfCaches, cacheSize] = splittedContent[0].split(' ').map((number) => parseInt(number));
+    [numberOfVideos, numberOfEndpoints, numberOfRequestDescriptions, numberOfCaches, cacheSize] = splittedContent[0].split(' ').map((number) => parseInt(number));
     splittedContent[1].split(' ').forEach((videoSize, index) => {
         videos.push({
             id: index,
@@ -23,38 +26,32 @@ export function fileReader(filePath) {
     });
     splittedContent = splittedContent.slice(2, splittedContent.length);
 
-    let inEndpointDescription = false;
-    let endpointIndex = 0;
-    let numberOfCachesAlreadyDescribed = 0;
+    let lineIndex = 0;
 
-    while(true) {
-        if(!inEndpointDescription){
-            if(splittedContent[endpointIndex] == '') {
-                break;
-            }
-            // Get Endpoint description line
-            let endpointLatency = 0
-            let numberOfCaches = 0;
-            [endpointLatency, numberOfCaches] = splittedContent[endpointIndex].split(' ');
-            numberOfCachesAlreadyDescribed = numberOfCaches;
-            inEndpointDescription = true;
-        } else {
-            for(let cacheIndex = 1; cacheIndex <= numberOfCaches; cacheIndex++){
-                let cacheId = 0;
-                let latency = 0;
-                [cacheId, latency] = splittedContent[endpointIndex+cacheIndex].split(' ');
-                caches.push({
-                    cacheId,
-                    latency
-                })
-                numberOfCachesAlreadyDescribed--;
-            }
-            inEndpointDescription = false;
+    for(let endpointIndex = 0; endpointIndex < numberOfEndpoints; endpointIndex++) {
+        let endpointLatency, numberOfCaches;
+        [endpointLatency, numberOfCaches] = splittedContent[lineIndex].split(' ');
+        const endpoint = new Endpoint(endpointLatency);
+        endpoints.push(endpoint);
+        lineIndex++;
+        for(let cacheIndex = 0; cacheIndex < numberOfCaches; cacheIndex++) {
+            let cacheId, cacheLatency;
+            [cacheId, cacheLatency] = splittedContent[lineIndex].split(' ');
+            const cache = new Cache(cacheId, cacheLatency, cacheSize);
+            endpoint.caches.push(cache);
+            lineIndex++;
         }
-        endpointIndex += numberOfCaches;
     }
 
-    return caches;
+    splittedContent = splittedContent.slice(lineIndex, splittedContent.length);
+    for(let requestIndex = 0; requestIndex < numberOfRequestDescriptions; requestIndex++) {
+        let requestId, endpointId, numberOfRequests;
+        [requestId, endpointId, numberOfRequests] = splittedContent[requestIndex].split(' ');
+        const request = new RequestDescription(requestId, endpointId, numberOfRequests);
+        requests.push(request);
+    }
+
+    return [videos, endpoints, requests];
 }
 
 export function fileWriter(fileName, content) {
