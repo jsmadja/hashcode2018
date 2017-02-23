@@ -1,15 +1,12 @@
-export default class Endpoint {
-    
-    caches = [];
-    datacenterLatency;
-    id;
-    latency;
+'use strict';
 
-    constructor(id, datacenterLatency, latency) {
-
-    	this.id = id;
-        this.datacenterLatency = datacenterLatency;
-        this.latency = latency;
-    }
-
+class Endpoint {
+  constructor(id, datacenterLatency) {
+    this.id = id;
+    this.caches = [];
+    this.requests = {};
+    this.datacenterLatency = datacenterLatency;
+  }
 }
+
+module.exports = Endpoint;

@@ -1,12 +1,11 @@
-export default class Cache {
-    
-    id;
-    size;
-    endpointInfos = [];
+'use strict';
 
-    constructor(id, size) {
-
-        this.id = id;
-        this.size = size;
-    }
+class Cache {
+  constructor(id, size) {
+    this.id = id;
+    this.size = size;
+    this.endpointInfos = [];
+  }
 }
+
+module.exports = Cache;

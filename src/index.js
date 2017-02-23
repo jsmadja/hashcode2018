@@ -1,13 +1,13 @@
-import {fileReader, fileWriter} from './utils/files';
-import {calcSolution} from './main';
+const Files = require('./utils/files');
+const Main = require('./main');
 
-let [videosInput, endpointsInput, cachesInput, requestsInput ] = fileReader('./data/example.in');
+let [videosInput, endpointsInput, cachesInput, requestsInput] = Files.fileReader('./data/example.in');
 
 console.log(videosInput);
 console.log(endpointsInput);
 console.log(cachesInput);
 console.log(requestsInput);
 
-const solution = calcSolution(videosInput, endpointsInput, cachesInput, requestsInput);
+const solution = Main.calcSolution(videosInput, endpointsInput, cachesInput, requestsInput);
 
-console.log(solution)
+console.log(solution);
