@@ -15,7 +15,7 @@ describe('Ouput', () => {
     it('should output 1 cache', () => {
         const caches = [{
             id: 0,
-            videos: [0]
+            video: 0
         }];
         const text = Output.write(caches);
         assert.equal(text, `1
@@ -26,15 +26,23 @@ describe('Ouput', () => {
         const caches = [
             {
                 id: 0,
-                videos: [2]
+                video: 2
             },
             {
                 id: 1,
-                videos: [3, 1]
+                video: 3
+            },
+            {
+                id: 1,
+                video: 1
             },
             {
                 id: 2,
-                videos: [0, 1]
+                video: 0
+            },
+            {
+                id: 2,
+                video: 1
             }
         ];
         const text = Output.write(caches);
@@ -42,6 +50,22 @@ describe('Ouput', () => {
 0 2
 1 3 1
 2 0 1`);
+    });
+
+    it('should output 1 cache (merged version)', () => {
+        const caches = [
+            {
+                id: 0,
+                video: 1
+            },
+            {
+                id: 0,
+                video: 2
+            }
+        ];
+        const text = Output.write(caches);
+        assert.equal(text, `1
+0 1 2`);
     });
 
 
