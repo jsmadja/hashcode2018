@@ -12,7 +12,7 @@ describe('Score videos', () => {
 
     // WHEN
     const scoredVideos = ScoreVideo.scoreVideo(
-      [{latency: 1, requests: [{numberOfRequests: 1, videoId: 0}, {numberOfRequests: 2, videoId: 1}]}],
+      [{datacenterLatency: 1, requests: {0: 1, 1: 2}}],
       [{id: 0, score: 9, size: 1}, {id: 1, score: 8, size: 1}]
     );
 

@@ -11,12 +11,10 @@ module.exports = {
 
     _.each(endpoints, endpoint => {
 
-      _.each(endpoint.requests, request => {
+      _.mapKeys(endpoint.requests, (value, key) => {
 
-        if (request.videoId) {
-          const video = videos[request.videoId];
-          video.score += x * request.numberOfRequests / y * video.size * z * endpoint.latency;
-        }
+        const video = _.find(videos, video => video.id === parseInt(key, 10));
+        video.score += x * parseInt(value, 10) / y * video.size * z * parseInt(endpoint.datacenterLatency, 10);
       });
     });
 
