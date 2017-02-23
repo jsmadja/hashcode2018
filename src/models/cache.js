@@ -1,13 +1,12 @@
 export default class Cache {
+    
+    id;
+    size;
+    endpointInfos = [];
 
-  id;
-  latency;
-  size;
+    constructor(id, size) {
 
-  constructor(id, latency, size) {
-
-    this.id = id;
-    this.latency = latency;
-    this.size = size;
-  }
+        this.id = id;
+        this.size = size;
+    }
 }

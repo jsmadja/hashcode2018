@@ -1,15 +1,18 @@
 import fs from 'fs';
+import _ from 'lodash';
 
 import RequestDescription from '../models/request-description';
 import Cache from '../models/cache';
 import Endpoint from '../models/endpoint';
-export Video from '../models/video';
+import Video from '../models/video';
+import EndpointInfo from '../models/endpoint-info';
 
 export function fileReader(filePath) {
 
     const videos = [];
     const endpoints = [];
     const requests = [];
+    const caches = [];
     let numberOfVideos = 0;
     let numberOfEndpoints = 0;
     let numberOfRequestDescriptions = 0;
@@ -30,13 +33,19 @@ export function fileReader(filePath) {
     for (let endpointIndex = 0; endpointIndex < numberOfEndpoints; endpointIndex++) {
         let endpointLatency, numberOfCaches;
         [endpointLatency, numberOfCaches] = splittedContent[lineIndex].split(' ');
-        const endpoint = new Endpoint(endpointLatency);
+        const endpoint = new Endpoint(endpointIndex, endpointLatency);
         endpoints.push(endpoint);
         lineIndex++;
         for (let cacheIndex = 0; cacheIndex < numberOfCaches; cacheIndex++) {
-            let cacheId, cacheLatency;
+            let cacheId, cacheLatency, cache;
             [cacheId, cacheLatency] = splittedContent[lineIndex].split(' ');
-            const cache = new Cache(cacheId, cacheLatency, cacheSize);
+            cache = _.find(caches, {id: cacheId});
+            if(!cache) {
+                cache = new Cache(cacheId, cacheSize);
+                caches.push(cache);
+            }
+            const endpointInfo = new EndpointInfo(cacheLatency, endpoint);
+            cache.endpointInfos.push(endpointInfo);
             endpoint.caches.push(cache);
             lineIndex++;
         }
@@ -50,7 +59,7 @@ export function fileReader(filePath) {
         requests.push(request);
     }
 
-    return [videos, endpoints, requests];
+    return [videos, endpoints, caches, requests];
 }
 
 export function fileWriter(fileName, content) {
