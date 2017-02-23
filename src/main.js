@@ -1,5 +1,4 @@
 export function calcSolution(videosInput, endpointsInput, cachesInput, requestsInput) {
-
   let areCachesFull = false;
   const result = [];
 
@@ -28,7 +27,14 @@ export function calcSolution(videosInput, endpointsInput, cachesInput, requestsI
     result.push({
       video: bestVideo.id,
       cache: bestCache.id,
-    })
+    });
+
+    bestCache.size -= bestVideo.size;
+    bestCache.endpointInfos.forEach(({ endpoint }) => {
+      if (endpoint.requests[bestVideo.id]) {
+        delete endpoint.requests[bestVideo.id];
+      }
+    });
   }
 }
 
@@ -37,6 +43,9 @@ function filterVideos(v) {
 }
 
 function timeSaved(video, cache) {
+  if (cache.size < video.size) {
+    return 0;
+  }
   return cache.endpointInfos.reduce((total, endpointInfo) => {
     const numberOfRequests = endpointInfo.endpoint.requests[video.id];
     return total + numberOfRequests * (endpoint.endpoint.latency - endpointInfo.latency);
