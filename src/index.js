@@ -1,4 +1,4 @@
-import { fileReader, fileWriter } from './utils/files';
+import {fileReader, fileWriter} from './utils/files';
 
 let videos, endpoints, requests;
 [videos, endpoints, requests] = fileReader('./data/example.in');

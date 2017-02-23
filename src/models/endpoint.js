@@ -1,11 +1,11 @@
 export default class Endpoint {
-    
-    caches = [];
-    latency;
 
-    constructor(latency) {
+  caches = [];
+  latency;
 
-        this.latency = latency;
-    }
+  constructor(latency) {
+
+    this.latency = latency;
+  }
 
 }

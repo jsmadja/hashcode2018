@@ -1,12 +1,14 @@
 export default class Video {
-	
-	id;
-    size;
 
-    constructor(id, size) {
+  id;
+  size;
+  score;
 
-        this.id = id;
-        this.size = size;
-    }
+  constructor(id, size) {
+
+    this.id = id;
+    this.size = size;
+    this.score = 0;
+  }
 
 }

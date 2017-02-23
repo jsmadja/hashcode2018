@@ -15,7 +15,7 @@ export function fileReader(filePath) {
     let numberOfRequestDescriptions = 0;
     let numberOfCaches = 0;
     let cacheSize = 0;
-    
+
     const fileContent = fs.readFileSync(filePath, {encoding: 'utf-8'});
     let splittedContent = fileContent.split('\n');
     [numberOfVideos, numberOfEndpoints, numberOfRequestDescriptions, numberOfCaches, cacheSize] = splittedContent[0].split(' ').map((number) => parseInt(number));
@@ -27,13 +27,13 @@ export function fileReader(filePath) {
 
     let lineIndex = 0;
 
-    for(let endpointIndex = 0; endpointIndex < numberOfEndpoints; endpointIndex++) {
+    for (let endpointIndex = 0; endpointIndex < numberOfEndpoints; endpointIndex++) {
         let endpointLatency, numberOfCaches;
         [endpointLatency, numberOfCaches] = splittedContent[lineIndex].split(' ');
         const endpoint = new Endpoint(endpointLatency);
         endpoints.push(endpoint);
         lineIndex++;
-        for(let cacheIndex = 0; cacheIndex < numberOfCaches; cacheIndex++) {
+        for (let cacheIndex = 0; cacheIndex < numberOfCaches; cacheIndex++) {
             let cacheId, cacheLatency;
             [cacheId, cacheLatency] = splittedContent[lineIndex].split(' ');
             const cache = new Cache(cacheId, cacheLatency, cacheSize);
@@ -43,7 +43,7 @@ export function fileReader(filePath) {
     }
 
     splittedContent = splittedContent.slice(lineIndex, splittedContent.length);
-    for(let requestIndex = 0; requestIndex < numberOfRequestDescriptions; requestIndex++) {
+    for (let requestIndex = 0; requestIndex < numberOfRequestDescriptions; requestIndex++) {
         let requestId, endpointId, numberOfRequests;
         [requestId, endpointId, numberOfRequests] = splittedContent[requestIndex].split(' ');
         const request = new RequestDescription(requestId, endpointId, numberOfRequests);
@@ -54,7 +54,7 @@ export function fileReader(filePath) {
 }
 
 export function fileWriter(fileName, content) {
-    
+
     fs.writeFileSync(fileName, content);
 
 }
