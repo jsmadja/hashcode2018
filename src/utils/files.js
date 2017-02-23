@@ -51,7 +51,7 @@ module.exports = {
     }
 
     splittedContent = splittedContent.slice(lineIndex, splittedContent.length);
-    console.log(numberOfRequestDescriptions);
+    // console.log(numberOfRequestDescriptions);
     for (let requestIndex = 0; requestIndex < numberOfRequestDescriptions; requestIndex++) {
       let requestId, endpointId, numberOfRequests;
       [requestId, endpointId, numberOfRequests] = splittedContent[requestIndex].split(' ');
@@ -64,7 +64,7 @@ module.exports = {
     });
 
 
-    console.log(requestsByEndpoint);
+    // console.log(requestsByEndpoint);
 
     for (let requestByE in requestsByEndpoint) {
       endpoints[requestsByEndpoint[requestByE][0].endpointId].requests = RequestDescription.computeMapRequest(requestsByEndpoint[requestByE]);

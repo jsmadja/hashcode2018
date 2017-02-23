@@ -12,11 +12,11 @@ const timeSaved = (video, cache) => {
   }
   return cache.endpointInfos.reduce((total, endpointInfo) => {
     const numberOfRequests = endpointInfo.endpoint.requests[video.id] || 0;
-    console.log('numberOfRequests');
-    console.log(numberOfRequests);
-    console.log(endpointInfo.endpoint.datacenterLatency);
-    console.log('coucou');
-    console.log(total);
+    // console.log('numberOfRequests');
+    // console.log(numberOfRequests);
+    // console.log(endpointInfo.endpoint.datacenterLatency);
+    // console.log('coucou');
+    // console.log(total);
     return total + numberOfRequests * (parseInt(endpointInfo.endpoint.datacenterLatency, 10) - endpointInfo.latency);
   }, 0);
 };
@@ -35,14 +35,14 @@ module.exports = {
 
       const weightedVideos = scoreVideo(endpointsInput, videosInput);
 
-      console.log('weightedVideos')
-      console.log(weightedVideos)
+      // console.log('weightedVideos')
+      // console.log(weightedVideos)
 
       weightedVideos.forEach((video) => {
         cachesInput.forEach((cache) => {
           const score = timeSaved(video, cache);
-          console.log(`score for video ${video.id} in cache ${cache.id} :`)
-          console.log(score)
+          // console.log(`score for video ${video.id} in cache ${cache.id} :`)
+          // console.log(score)
           if (score > bestScore) {
             bestCache = cache;
             bestScore = score;
