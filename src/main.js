@@ -3,7 +3,10 @@
 const { scoreVideo } = require('./utils/score-video');
 
 const filterVideos = v => {
-  return v.slice(0, 5);
+  const total = v.length;
+  const number = 10;
+  const randomIndex = Math.floor(Math.random() * Math.max(total - number, 0));
+  return v.slice(randomIndex, randomIndex + number);
 };
 
 const timeSaved = (video, cache) => {
@@ -12,11 +15,6 @@ const timeSaved = (video, cache) => {
   }
   return cache.endpointInfos.reduce((total, endpointInfo) => {
     const numberOfRequests = endpointInfo.endpoint.requests[video.id] || 0;
-    // console.log('numberOfRequests');
-    // console.log(numberOfRequests);
-    // console.log(endpointInfo.endpoint.datacenterLatency);
-    // console.log('coucou');
-    // console.log(total);
     return total + numberOfRequests * (parseInt(endpointInfo.endpoint.datacenterLatency, 10) - endpointInfo.latency);
   }, 0);
 };
@@ -33,7 +31,7 @@ module.exports = {
       let bestCache = null;
       let bestVideo = null;
 
-      const weightedVideos = scoreVideo(endpointsInput, videosInput);
+      const weightedVideos = filterVideos(videosInput);
 
       // console.log('weightedVideos')
       // console.log(weightedVideos)
@@ -52,6 +50,7 @@ module.exports = {
       });
 
       if (bestScore === 0) {
+        console.log('best score 0')
         return result;
       }
 
@@ -60,9 +59,14 @@ module.exports = {
         id: bestCache.id,
       });
 
+      // console.log('found result')
+      // console.log('video ' + bestVideo.id)
+      // console.log('cache ' + bestCache.id)
+
       bestCache.size -= bestVideo.size;
       bestCache.endpointInfos.forEach(({endpoint}) => {
         if (endpoint.requests[bestVideo.id]) {
+          // console.log('deleted')
           delete endpoint.requests[bestVideo.id];
         }
       });
