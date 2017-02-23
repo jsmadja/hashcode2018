@@ -2,10 +2,7 @@
 
 const _ = require('lodash');
 
-const toCacheLine = cache => {
-    const cacheId = cache[0].id;
-    return `${cacheId} ${_(cache).map(c => c.video).join(' ')}`;
-};
+const toCacheLine = cache => `${cache[0].id} ${_(cache).map(c => c.video).join(' ')}`;
 
 module.exports = {
     write: caches => {
