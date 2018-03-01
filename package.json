@@ -12,7 +12,9 @@
   "license": "MIT",
   "devDependencies": {
     "nodemon": "1.14.12",
-    "npm-check": "5.5.2"
+    "npm-check": "5.5.2",
+    "ts-node": "^5.0.1",
+    "typescript": "^2.7.2"
   },
   "dependencies": {
     "lodash": "^4.17.5",
