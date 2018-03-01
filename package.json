@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index",
+    "start": "ts-node src/index",
     "dev": "nodemon src/index.js",
     "test": "mocha test",
+    "submit": "ts-node src/index a_example && ts-node src/index b_should_be_easy && ts-node src/index c_no_hurry && ts-node src/index d_metropolis && ts-node src/index e_high_bonus && npm run package",
     "package": "zip -r hashcode2018.zip . -x node_modules/**\\* .git/**\\* data/**\\* .idea/**\\*"
   },
   "author": "Xebia",

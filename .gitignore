@@ -2,3 +2,5 @@ node_modules/
 .gitignore
 .idea/
 .history
+*.out
+*.zip
