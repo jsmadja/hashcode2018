@@ -39,6 +39,8 @@ module.exports = {
 
 function addResult(currentResult: AlgoOutput, vehicle: Vehicle, ride: Ride): AlgoOutput {
   vehicle.availableTime = Math.max(ride.start.time, distanceFromRide(vehicle, ride)) + distanceFromStartToFinish(ride);
+  vehicle.x = ride.finish.x;
+  vehicle.y = ride.finish.y;
   const vehicleInSolution = currentResult.find(v => v.vehicle === vehicle.id);
   if (vehicleInSolution) {
     vehicleInSolution.rides.push(ride.id);
