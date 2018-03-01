@@ -23,7 +23,9 @@ type Ride = {
   }
 }
 
-type AlgoOutput = {
+type AlgoOutput = AlgoResult[];
+
+type AlgoResult =  {
   vehicle: number,
   rides: number[],
-}[]
+};

@@ -1,5 +1,5 @@
 const Files = require('./utils/files');
-const Main = require('./main');
+const Main = require('./main2');
 const Output = require('./models/output');
 
 const FILE = process.argv[2];
