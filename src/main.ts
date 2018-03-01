@@ -8,6 +8,10 @@ module.exports = {
     }));
     let T = 0;
     let rides = input.rides;
+    rides.sort((r1, r2) => {
+      return r1.finish.time - r2.finish.time;
+    });
+    console.log(rides);
     let result: AlgoOutput = [];
 
     while (vehicles.length > 0 && T < input.steps) {
@@ -21,8 +25,8 @@ module.exports = {
         vehicles.splice(vehicleIndex, 1);
         continue;
       }
-      console.log('found ride')
-      console.log(ride)
+      // console.log('found ride')
+      // console.log(ride)
 
       addResult(result, vehicle, <Ride> ride);
       T++;
@@ -69,7 +73,7 @@ function selectNextVehicle(vehicles: Vehicle[]): Vehicle | null {
 function findNextRide(vehicle: Vehicle, rides: Ride[]): [boolean, Ride | null] {
   const index = rides.findIndex((ride) => isRideFinishable(vehicle, ride));
   if (index >= 0) {
-    console.log('ok')
+    // console.log('ok')
     const ride = rides.splice(index, 1)
     return [true, ride[0]];
   }
