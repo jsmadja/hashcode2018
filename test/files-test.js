@@ -55,4 +55,11 @@ describe('Files', () => {
       });
   });
 
+  it('should parse b_should_be_easy.in', () => {
+    const data = Files.fileReader('./data/b_should_be_easy.in');
+
+    console.log(data);
+
+  });
+
 });
