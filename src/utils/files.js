@@ -23,6 +23,7 @@ module.exports = {
       const rideFirstLine = _.map(rideLine.split(' '), d => parseInt(d));
       algoInput.rides.push(
         {
+          id: i-1,
           start: {
             x: rideFirstLine[0],
             y: rideFirstLine[1],

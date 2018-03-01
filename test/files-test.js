@@ -16,6 +16,7 @@ describe('Files', () => {
         steps: 10,
         rides: [
           {
+            id: 0,
             start: {
               x: 0,
               y: 0,
@@ -28,6 +29,7 @@ describe('Files', () => {
             }
           },
           {
+            id: 1,
             start: {
               x: 1,
               y: 2,
@@ -40,6 +42,7 @@ describe('Files', () => {
             }
           },
           {
+            id: 2,
             start: {
               x: 2,
               y: 0,
