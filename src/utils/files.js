@@ -36,7 +36,7 @@ module.exports = {
         }
       );
     }
-    return [algoInput];
+    return algoInput;
   },
 
 };

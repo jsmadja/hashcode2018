@@ -57,9 +57,23 @@ describe('Files', () => {
 
   it('should parse b_should_be_easy.in', () => {
     const data = Files.fileReader('./data/b_should_be_easy.in');
-
-    console.log(data);
-
+    assert.equal(data.rides.length, 300);
   });
+
+  it('should parse c_no_hurry.in', () => {
+    const data = Files.fileReader('./data/c_no_hurry.in');
+    assert.equal(data.rides.length, 10000);
+  });
+
+  it('should parse d_metropolis.in', () => {
+    const data = Files.fileReader('./data/d_metropolis.in');
+    assert.equal(data.rides.length, 10000);
+  });
+
+  it('should parse e_high_bonus.in', () => {
+    const data = Files.fileReader('./data/e_high_bonus.in');
+    assert.equal(data.rides.length, 10000);
+  });
+
 
 });
