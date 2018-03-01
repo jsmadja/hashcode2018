@@ -71,9 +71,9 @@ function selectNextVehicle(vehicles: Vehicle[]): Vehicle | null {
 
 function rideValue(vehicle: Vehicle, ride: Ride, bonus: number): [number, number] {
   const distance = distanceFromStartToFinish(ride);
-  const hasBonus = vehicle.availableTime + distance <= ride.start.time;
+  const hasBonus = (vehicle.availableTime + distance) <= ride.start.time;
   const Tfin = distance + Math.max(ride.start.time, vehicle.availableTime + distanceFromRide(vehicle, ride));
-  return [(distanceFromStartToFinish(ride) + (hasBonus ? bonus : 0))/(Tfin - vehicle.availableTime), Tfin];
+  return [(distanceFromStartToFinish(ride) + (hasBonus ? 3*bonus : 0))/(Tfin - vehicle.availableTime), Tfin];
 }
 
 // mutates rides
@@ -93,6 +93,40 @@ function findNextBestRide(vehicle: Vehicle, rides: Ride[], bonus: number): [bool
   const rideIndex = rides.findIndex(ride => ride.id === (<Ride>bestRide).id);
   rides.splice(rideIndex, 1);
   return [true, bestRide, tfin];
+}
+
+type RideResult = { ride: Ride | null, value: number, tfin: number };
+
+function findNextNBestRides(vehicle: Vehicle, n: number, rides: Ride[], bonus: number): [boolean, RideResult[] | null] {
+  const possibleRides = rides.filter((ride) => isRideFinishable(vehicle, ride));
+  if (possibleRides.length === 0) {
+    return [false, null];
+  }
+  const bestRides = possibleRides.reduce((bestRides: RideResult[], ride) => {
+    const [value, tfin] = rideValue(vehicle, ride, bonus);
+    if (bestRides.length < n) {
+      return bestRides.concat([{ ride, tfin, value }]);
+    }
+
+    const worstRideInBestRides = <RideResult> bestRides.reduce((worstRide, ride) => {
+      if (worstRide === null) {
+        return ride;
+      }
+      if (worstRide.value < ride.value) {
+        return worstRide;
+      }
+      return ride;
+    }, <RideResult | null> null);
+  
+    // replace worst
+    if (worstRideInBestRides.value < value) {
+      worstRideInBestRides.ride = ride;
+      worstRideInBestRides.tfin = tfin;
+      worstRideInBestRides.value = value;
+    }
+    return bestRides;
+  }, <RideResult[]> []);
+  return [true, bestRides];
 }
 
 function distanceFromRide(vehicle: Vehicle, ride: Ride): number {
