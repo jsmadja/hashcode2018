@@ -1,6 +1,6 @@
 module.exports = {
   calcSolution: (input: AlgoInput): AlgoOutput => {
-    let vehicles: Vehicle[] = Array.from({ length: input.vehicles }).map((x, i) => ({
+    let vehicles: Vehicle[] = Array.from({length: input.vehicles}).map((x, i) => ({
       id: i + 1,
       x: 0,
       y: 0,
@@ -19,7 +19,7 @@ module.exports = {
       if (vehicle === null) {
         break;
       }
-      const [foundRide, ride] = findNextRide(vehicle, rides);
+      const [foundRide, ride] = findNextBestRide(vehicle, rides, input.bonus);
       if (!foundRide) {
         const vehicleIndex = vehicles.findIndex(v => v.id === vehicle.id);
         vehicles.splice(vehicleIndex, 1);
@@ -28,7 +28,7 @@ module.exports = {
       // console.log('found ride')
       // console.log(ride)
 
-      addResult(result, vehicle, <Ride> ride);
+      addResult(result, vehicle, <Ride>ride);
       T++;
     }
 
@@ -82,6 +82,24 @@ function findNextRide(vehicle: Vehicle, rides: Ride[]): [boolean, Ride | null] {
   return [false, null];
 }
 
+function findNextBestRide(vehicle: Vehicle, rides: Ride[], bonus: number): [boolean, Ride | null, number] {
+  const possibleRides = rides.filter((ride) => isRideFinishable(vehicle, ride));
+  if (possibleRides.length === 0) {
+    return [false, null, 0];
+  }
+  type RideResult = { ride: Ride | null, value: number, tfin: number };
+  const {ride: bestRide, tfin} = possibleRides.reduce((bestRide, ride) => {
+    const [value, tfin] = rideValue(vehicle, ride, bonus);
+    if (value > bestRide.value) {
+      return {ride, value, tfin};
+    }
+    return bestRide;
+  }, <RideResult> {ride: null, value: -1});
+  const rideIndex = rides.findIndex(ride => ride.id === (<Ride>bestRide).id);
+  rides.splice(rideIndex, 1);
+  return [true, bestRide, tfin];
+}
+
 function distanceFromRide(vehicle: Vehicle, ride: Ride): number {
   return Math.abs(vehicle.x - ride.start.x) + Math.abs(vehicle.y - ride.start.y);
 }
@@ -96,4 +114,11 @@ function timeToFinishRide(vehicle: Vehicle, ride: Ride): number {
 
 function isRideFinishable(vehicle: Vehicle, ride: Ride): boolean {
   return timeToFinishRide(vehicle, ride) <= ride.finish.time;
+}
+
+function rideValue(vehicle: Vehicle, ride: Ride, bonus: number): [number, number] {
+  const distance = distanceFromStartToFinish(ride);
+  const hasBonus = (vehicle.availableTime + distance) <= ride.start.time;
+  const Tfin = distance + Math.max(ride.start.time, vehicle.availableTime + distanceFromRide(vehicle, ride));
+  return [(distanceFromStartToFinish(ride) + (hasBonus ? 3*bonus : 0))/(Tfin - vehicle.availableTime), Tfin];
 }
